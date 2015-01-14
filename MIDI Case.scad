@@ -52,7 +52,7 @@ module bottom() {
 }
 
 
-top();
-bottom();
+translate([0, 0, 25]) top();
+rotate ([180, 0, 0]) translate([-30, 0, -4]) bottom();
 
 
