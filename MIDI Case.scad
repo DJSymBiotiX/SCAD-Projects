@@ -3,14 +3,16 @@ peg_height = 3;
 peg_faces = 50;
 
 module create_peg (x, y, h) {
-	translate([x, y, h]) cylinder(h = peg_height, r = peg_radius, $fn = peg_faces);
+	translate([x, y, h]) cube([2, 2, peg_height]);
+
+// cylindar(h = peg_height, r = peg_radius, $fn = peg_faces);
 }
 
 
 module top() {
 
 	height = 20;
-	peg_depth = height - 1.5;
+	peg_depth = height;
 
 	translate([0, 0, -25]) {
 		 difference() {
@@ -26,17 +28,17 @@ module top() {
 		}
 
 		// Cylindrical pegs
-		create_peg(1, 8, peg_depth);
-		create_peg(1, 28, peg_depth);
-		create_peg(25, 8, peg_depth);
-		create_peg(25, 28, peg_depth);
+		create_peg(0, 8, peg_depth);
+		create_peg(0, 28, peg_depth);
+		create_peg(24, 8, peg_depth);
+		create_peg(24, 28, peg_depth);
 	}	
 }
 
 module bottom() {
 	
 	height = 4;
-	peg_depth = -1.5;
+	peg_depth = 0;
 
 	difference() {
 		// Base cube with cutout
@@ -44,10 +46,10 @@ module bottom() {
 		translate([2, 2, -1]) cube([22, 32, height]);
 
 		// Cylindrical peg holes
-		create_peg(1, 8, peg_depth);
-		create_peg(1, 28, peg_depth);
-		create_peg(25, 8, peg_depth);
-		create_peg(25, 28, peg_depth);
+		create_peg(0, 8, peg_depth);
+		create_peg(0, 28, peg_depth);
+		create_peg(24, 8, peg_depth);
+		create_peg(24, 28, peg_depth);
 	}
 }
 
