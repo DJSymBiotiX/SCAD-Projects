@@ -64,7 +64,7 @@ module bottom() {
 }
 
 
-//translate([0, 0, 25]) top();
-rotate ([180, 0, 0]) translate([-30, -37, -4]) bottom();
+translate([0, 0, 25]) top();
+//rotate ([180, 0, 0]) translate([-30, -37, -4]) bottom();
 
 
