@@ -1,6 +1,6 @@
-base_length = 38;
+base_length = 40;
 base_width = 2;
-base_height = 26;
+base_height = 27;
 base = [base_length, base_width, base_height];
 base_bottom = [base_length, base_width + 4, 1];
 
@@ -17,13 +17,14 @@ buff = [buff_length, buff_width, buff_height];
 translate([-1 * (base_length / 2), 0, 0]) {
 	difference() {
 		cube(base);
-		translate([-5, -1, 27]) {
-			rotate([0, 50, 0]) {
+
+		translate([-2, -1, 24]) {
+			rotate([0, 0, 0]) {
 				cube(corner);
 			}
 		}
-		translate([38.5, -1, 23]) {
-			rotate([0, -50, 0]) {
+		translate([36, -1, 24]) {
+			rotate([0, 0, 0]) {
 				cube(corner);
 			}
 		}
