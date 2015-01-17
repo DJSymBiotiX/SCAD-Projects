@@ -30,7 +30,7 @@ module top() {
 			translate([2, 0, 2]) cube([22, 2, height]);
 
 			// Pin Curout
-			translate([9, 34, 14.5]) cube([8, 3, 7]);
+			translate([9, 34, 14.5]) cube([9, 3, 7]);
 		}
 
 		// Cylindrical pegs
@@ -46,7 +46,7 @@ module bottom() {
 	height = 4;
 	peg_depth = 0;
 
-	translate([9, 0, -2]) cube([8, 2, 2]);
+	translate([9, 0, -2]) cube([9, 2, 2]);
 	
 	difference() {
 		// Base cube with cutout
