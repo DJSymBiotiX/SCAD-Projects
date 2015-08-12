@@ -1,4 +1,4 @@
-length = 136;
+length = 134;
 height = 52;
 width = 1;
 
