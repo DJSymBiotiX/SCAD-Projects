@@ -4,15 +4,15 @@
 // Resolution of all the Cylinders In this project
 fragments = 256;
 // Diameter of main disk
-disk_diameter = 200;
+disk_diameter = 110;
 // Height of main disk
 disk_height = 2;
 // Diameter of very inner hole
 inner_diameter = 32;
 // Width of inner hole
-inner_width = 4;
+inner_width = 3;
 // Width of outer hole
-outer_width = 4;
+outer_width = 3;
 // Hole diameter for filamet on the main disk
 outer_hole_diameter = 3;
 // Dole diameter for filament on the outside inner hole
@@ -20,7 +20,7 @@ inner_hole_diameter = 2;
 // Height of innter holes
 inner_height = 25;
 // Fin width, (width of area between outer and inner holes)
-fin_width = 16;
+fin_width = 4;
 
 /****************************
  * Helpful Pre Calculations *
