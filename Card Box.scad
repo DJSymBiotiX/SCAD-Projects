@@ -17,7 +17,7 @@ base_edge_thickness = 5;
 // If short way is true, the cards would stand taller rather than longer
 short_way = true;
 // Use minkowski sum with a sphere to round all the edges
-smoothen = true;
+smoothen = false;
 // How much smoothing you want. The higher, the smoother, but will take more time to process
 smoothen_amount = 10;
 // Simultaneously create a lid for it
@@ -25,7 +25,7 @@ make_lid = true;
 // Connection Width
 lid_con_width = 5;
 // Nudge factor for the lid
-lid_nudge = 0.05;
+lid_nudge = -0.2;
 // Add lid holders
 make_lid_holders = true;
 // Radius of holders
@@ -33,7 +33,7 @@ holder_radius = 5;
 // Length of holders
 holder_length = 10;
 // Resolution of holders
-holder_resolution = 128;
+holder_resolution = 256;
 
 // Card Derived Values
 card_sets = [ for (i = base_card_sets) (i * card_width) + card_nudge ];
