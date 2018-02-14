@@ -17,7 +17,13 @@ base_edge_thickness = 5;
 // If short way is true, the cards would stand taller rather than longer
 short_way = true;
 // Simultaneously create a lid for it
-make_lid = true;
+use_lid_style = true;
+// When using the lid style, don't display the base
+no_base = false;
+// When using the lid style, don't display the lid
+no_lid = false;
+// Space between the base and the lid when displaying both
+lid_spacer = 20;
 // Connection Width
 lid_con_width = 5;
 // Nudge factor for the lid
@@ -31,33 +37,25 @@ holder_length = 10;
 // Resolution of holders
 holder_resolution = 256;
 
-// Use minkowski sum with a sphere to round all the edges [DANGEROUS]
-// Probably causes tolerances to be totally wrong, so probably don't use
-smoothen = false;
-// How much smoothing you want. The higher, the smoother, but will take more time to process
-smoothen_amount = 10;
-
 // Card Derived Values
 card_sets = [ for (i = base_card_sets) (i * card_width) + card_nudge ];
 card_space = sum_list(card_sets);
 slot_space = slot_width * (len(card_sets) - 1);
 
 // Box Derived Values
-edge_thickness = make_lid ? (base_edge_thickness * 2) + lid_con_width : base_edge_thickness;
+edge_thickness = use_lid_style ? (base_edge_thickness * 2) + lid_con_width : base_edge_thickness;
 base_length = short_way ? base_card_length : base_card_height;
 base_height = short_way ? base_card_height : base_card_length;
 length = base_length + (edge_thickness * 2) + length_nudge;
 height = (base_height * (2 / 3)) + base_edge_thickness;
 width = (edge_thickness * 2) + card_space + slot_space;
 
-
-if (smoothen) {
-    minkowski () {
+if (use_lid_style && no_base) {
+    translate([(-length * 2 / 2) - lid_spacer - (length / 2), -width / 2, 0])
         make_box();
-        fibonacci_sphere(1, n=smoothen_amount);
-    }
 } else {
-    make_box();
+    translate([-length / 2, -width / 2, 0])
+        make_box(); 
 }
 
 module make_lid_insert(use_nudge=false) {
@@ -75,7 +73,7 @@ module make_base_shape(height_modifier=1) {
         cube([length, width, (height * height_modifier)]);
         translate([edge_thickness, edge_thickness, base_edge_thickness])
             cube([length - (edge_thickness * 2), width - (edge_thickness * 2), (height * height_modifier)]);
-    }
+    }             
 }
 
 module make_card_slots() {
@@ -100,22 +98,26 @@ module make_holders (holder_height) {
 }
 
 module make_box () {
-    if (make_lid) {
-        height_mod = 1 / 3;
-        translate ([length + 20, 0, 0]) {
-            make_base_shape(height_modifier=height_mod);
-            translate([base_edge_thickness, base_edge_thickness, (height * height_mod)])
-                make_lid_insert();
-        }
-        difference () {
-            union () {
-                make_base_shape();
-                make_card_slots();
+    if (use_lid_style) {
+        if (!no_lid) {
+            height_mod = 1 / 3;
+            translate ([length + lid_spacer, 0, 0]) {
+                make_base_shape(height_modifier=height_mod);
+                translate([base_edge_thickness, base_edge_thickness, (height * height_mod)])
+                    make_lid_insert();
             }
-            translate([base_edge_thickness, base_edge_thickness, base_edge_thickness + (height / 2)])
-                make_lid_insert(use_nudge=true);
         }
-        make_holders(height);
+        if (!no_base) {
+            difference () {
+                union () {
+                    make_base_shape();
+                    make_card_slots();
+                }
+                translate([base_edge_thickness, base_edge_thickness, base_edge_thickness + (height / 2)])
+                    make_lid_insert(use_nudge=true);
+            }
+            make_holders(height);
+        }
     } else {
         make_base_shape();
         make_card_slots();
@@ -124,29 +126,3 @@ module make_box () {
 
 // Function to sum a list/vector into one value
 function sum_list(v, i = 0, r = 0) = i < len(v) ? sum_list(v, i + 1, r + v[i]) : r;
-
-// Module to define a sphere using fibonacci numbers somehow
-module fibonacci_sphere(r, n, $fn){
-    $n = n == undef ? ceil((0.5 * $fn * $fn) / 2) : n;
-    hull()
-    polyhedron(points = [
-        for(i = [-$n : ($n - 2)])
-            r * _pos(i, $n)
-    ], faces=[
-        for(i = [0 : 3 : 2 * $n])
-            [i, i + 1, i + 2]
-    ]);
-}
-
-//calculates ith vertex position on a fibonacci unit sphere of 2*n vertices
-function _pos(i, n) =
-	[cos(_lon(i)) * _xy(_z(i, n)), 
-	 sin(_lon(i)) * _xy(_z(i, n)), 
-	 _z(i, n)];
-
-function _lon(i) = _golden_angle * i;
-function _z(i,n) = 2 * i / (2 * n + 1);
-function _xy(z)  = sqrt(1 - pow(z, 2));
-
-_golden_ratio = 1.61803;
-_golden_angle = 360 * _golden_ratio; 
